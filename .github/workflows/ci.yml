@@ -104,11 +104,23 @@ jobs:
         run: |
           python3 -m venv tools/venv && tools/venv/bin/pip install -q unicorn capstone lz4
           tools/venv/bin/python tools/test_simd.py --encodings 3000 --cases 4 --jobs "$(nproc)"
+      - name: Generated chunk cleanup regression
+        timeout-minutes: 5
+        run: tools/venv/bin/python tools/test_gen_cleanup.py -v
 
   macos:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generated chunk cleanup regression
+        timeout-minutes: 5
+        run: |
+          python3 -m venv tools/venv
+          tools/venv/bin/pip install -q unicorn capstone lz4
+          tools/venv/bin/python tools/test_gen_cleanup.py -v
       - name: Packages
         run: brew install sdl3 ffmpeg
       - name: App builds
@@ -159,6 +171,15 @@ jobs:
         shell: pwsh
         run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generated chunk cleanup regression
+        timeout-minutes: 5
+        shell: pwsh
+        run: |
+          python -m pip install -q unicorn capstone lz4
+          python tools/test_gen_cleanup.py -v
       # MSYS2 UCRT64 with the packages tools/setup_windows.ps1 installs (minus the debugger / validation layers),
       # binutils for windres (the exe's icon), git for tools/test_translate.sh
       - uses: msys2/setup-msys2@v2

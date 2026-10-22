@@ -99,6 +99,10 @@ sites; it does not yet discover addresses automatically from code patterns.
 
 `python tools/test_save.py` exercises the production save handlers against temporary files, without game data.
 
+`python tools/test_gen_cleanup.py` checks that regeneration removes obsolete numbered C chunks,
+including indices above 999, while keeping unrelated files. It uses a synthetic module and requires
+the generator's Python dependencies (`unicorn capstone lz4`).
+
 Build-cache regression tests use synthetic inputs and the production scheduler:
 `python tools/test_build_cache.py` and `python tools/test_gamebuild_resume.py`.
 On Windows, also run `python tools/test_windows_processes.py` to check independent
