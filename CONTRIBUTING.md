@@ -99,6 +99,11 @@ sites; it does not yet discover addresses automatically from code patterns.
 
 `python tools/test_save.py` exercises the production save handlers against temporary files, without game data.
 
+`python tools/test_nso.py` checks NSO parsing with synthetic bytes and requires `lz4`.
+It covers compressed/uncompressed segments, hashes, SysV/dynsym symbol counts, RELA/RELR and invalid metadata.
+The parser limits both the input file and its memory image to 512 MiB as a resource guard, not a format limit.
+RELR is normalized for static analysis without relocating the image; the runtime loader is unchanged.
+
 Build-cache regression tests use synthetic inputs and the production scheduler:
 `python tools/test_build_cache.py` and `python tools/test_gamebuild_resume.py`.
 On Windows, also run `python tools/test_windows_processes.py` to check independent
